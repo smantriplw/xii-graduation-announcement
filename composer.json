@@ -1,0 +1,15 @@
+{
+    "name": "smanti/xii-graduation-api",
+    "description": "Backend XII Graduation SMAN 3 Palu",
+    "type": "project",
+    "require": {
+        "firebase/php-jwt": "^6.4"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hanif Dwy Putra S",
+            "email": "hanifdwyputrasembiring@gmail.com"
+        }
+    ]
+}
