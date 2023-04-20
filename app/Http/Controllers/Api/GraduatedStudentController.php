@@ -67,7 +67,14 @@ class GraduatedStudentController extends Controller
       ], 400);
     }
 
-    Excel::import(new GraduatedStudentImport, $excel_file);
+    try {
+      Excel::import(new GraduatedStudentImport, $excel_file);
+    } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+      return response()->json([
+        "error" => $e->getMessage(),
+        "errors" => $e->failures(),
+      ]);
+    }
 
     return response()->json([
       "error" => null,

@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\GraduatedStudent;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -12,7 +13,7 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 
 class GraduatedStudentImport implements ToModel, WithValidation, WithHeadingRow, SkipsEmptyRows, WithBatchInserts
 {
-    use Importable;
+    use Importable, SkipsErrors;
     /**
     * @param array $row
     *
