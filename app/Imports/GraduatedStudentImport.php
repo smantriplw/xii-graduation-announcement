@@ -6,10 +6,11 @@ use App\Models\GraduatedStudent;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class GraduatedStudentImport implements ToModel, WithValidation, WithHeadingRow, SkipsEmptyRows
+class GraduatedStudentImport implements ToModel, WithValidation, WithHeadingRow, SkipsEmptyRows, WithBatchInserts
 {
     use Importable;
     /**
@@ -25,9 +26,14 @@ class GraduatedStudentImport implements ToModel, WithValidation, WithHeadingRow,
             'birth' => $row['tanggal_lahir'],
             'graduated_year' => $row['tahun_lulus'], 
         ]);
-    }
+  }
 
-    public function rules(): array
+  public function batchSize(): int
+  {
+    return 50;
+  }
+
+  public function rules(): array
     {
       return [
         'nisn' => 'integer|gt:0',
