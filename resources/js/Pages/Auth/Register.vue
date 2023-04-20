@@ -14,6 +14,7 @@ const form = useForm({
     password: '',
     password_confirmation: '',
     terms: false,
+    token_registration: '',
 });
 
 const submit = () => {
@@ -83,6 +84,18 @@ const submit = () => {
                     autocomplete="new-password"
                 />
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="register_token" value="Token Registration" />
+                <TextInput
+                    id="register_token"
+                    v-model="form.token_registration"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.token_registration" />
             </div>
 
             <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4">

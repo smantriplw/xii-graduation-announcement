@@ -189,4 +189,5 @@ return [
        'Excel' => \Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
 
+    'tokenSecret' => env('SHARED_TOKEN_KEY'),
 ];

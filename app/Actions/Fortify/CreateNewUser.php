@@ -3,6 +3,8 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use Carbon\Carbon;
+use Closure;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -24,6 +26,11 @@ class CreateNewUser implements CreatesNewUsers
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
+            'token_registration' => ['required', 'string', 'min:6', 'max:6', function(string $attr, mixed $val, Closure $fail) {
+                if ($val !== $this->generate_token()) {
+                    $fail('Wrong registration token');
+                }
+            }],
         ])->validate();
 
         return User::create([
@@ -31,5 +38,12 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+    }
+
+    public function generate_token(): string
+    {
+        $current_time = Carbon::now();
+
+        return substr(md5(config('tokenSecret') . strval($current_time->minute + $current_time->hour) . "smanti"), 0, 6);
     }
 }
