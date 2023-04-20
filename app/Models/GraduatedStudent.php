@@ -17,6 +17,8 @@ class GraduatedStudent extends Model
         'photo_path',
     ];
 
+    protected $hidden = ['nisn'];
+
     protected $casts = [
         'birth' => 'date:dd-MM-YYYY',
     ];

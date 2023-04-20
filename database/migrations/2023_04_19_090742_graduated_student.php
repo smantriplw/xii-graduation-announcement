@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('nisn');
             $table->string('name');
             $table->date('birth');
-            $table->string('photo_path');
+            $table->string('photo_path')->nullable();
             $table->integer('graduate_year');
             
             $table->timestamps();
