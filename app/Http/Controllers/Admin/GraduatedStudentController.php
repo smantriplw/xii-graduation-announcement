@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Contrrollers\Admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\GraduatedStudent;

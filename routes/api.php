@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\GraduatedStudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+  return $request->user();
+});
+
+Route::prefix('siswa')->group(function() {
+  Route::get('{nisn}', [GraduatedStudentController::class, 'show'])->where('nisn', '[0-9]+');
+  Route::post('{nisn}/photo', [GraduatedStudentController::class, 'uploadPhoto'])->where(
+    'nisn', '[0-9]+',
+  )->middleware('auth:sanctum');
 });
