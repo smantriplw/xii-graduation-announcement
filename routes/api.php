@@ -16,8 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-  return $request->user();
+Route::middleware('auth:sanctum')->group(function() {
+  Route::get('/user', function (Request $request) {
+    return $request->user();
+  });
 });
 
 Route::prefix('siswa')->group(function() {
@@ -25,4 +27,5 @@ Route::prefix('siswa')->group(function() {
   Route::post('{nisn}/photo', [GraduatedStudentController::class, 'uploadPhoto'])->where(
     'nisn', '[0-9]+',
   )->middleware('auth:sanctum');
+  Route::post('/', [GraduatedStudentController::class, 'excelUpsert'])->middleware('auth:sanctum');
 });

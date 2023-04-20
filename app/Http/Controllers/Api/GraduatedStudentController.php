@@ -2,8 +2,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Imports\GraduatedStudentImport;
 use App\Models\GraduatedStudent;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GraduatedStudentController extends Controller
 {
@@ -22,6 +24,8 @@ class GraduatedStudentController extends Controller
       "data" => $student->get(),
     ]);
   }
+
+
   public function uploadPhoto(Request $request, int $nisn)
   {
     $student = GraduatedStudent::where('nisn', $nisn);
@@ -51,6 +55,23 @@ class GraduatedStudentController extends Controller
         "file" => $file->getPath(),
         "siswa" => $student->first()->nisn,
       ],
+    ]);
+  }
+
+  public function excelUpsert(Request $request)
+  {
+    $excel_file = $request->file('file');
+    if (!$excel_file->isValid() || $excel_file->isFile() || !in_array(strtolower($excel_file->getExtension()), ['xlsx', 'csv', 'tsv', 'ods', 'xls', 'slk'])) {
+      return response()->json([
+        "error" => "File tidak valid atau format tidak didukung"
+      ], 400);
+    }
+
+    Excel::import(new GraduatedStudentImport, $excel_file);
+
+    return response()->json([
+      "error" => null,
+      "message" => "Data siswa berhasil di import",
     ]);
   }
 }
