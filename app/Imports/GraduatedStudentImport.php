@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\GraduatedStudent;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
@@ -10,8 +11,9 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\WithUpserts;
 
-class GraduatedStudentImport implements ToModel, WithValidation, WithHeadingRow, SkipsEmptyRows, WithBatchInserts
+class GraduatedStudentImport implements ToModel, WithValidation, WithHeadingRow, SkipsEmptyRows, WithUpserts, WithBatchInserts
 {
     use Importable, SkipsErrors;
     /**
@@ -24,8 +26,8 @@ class GraduatedStudentImport implements ToModel, WithValidation, WithHeadingRow,
         return new GraduatedStudent([
             'name' => $row['nama'],
             'nisn' => $row['nisn'],
-            'birth' => $row['tanggal_lahir'],
-            'graduated_year' => $row['tahun_lulus'], 
+            'birth' => Carbon::parse($row['tanggal_lahir'])->format('Y-m-d'),
+            'graduate_year' => $row['tahun_lulus'], 
         ]);
   }
 
@@ -37,9 +39,14 @@ class GraduatedStudentImport implements ToModel, WithValidation, WithHeadingRow,
   public function rules(): array
     {
       return [
-        'nisn' => 'integer|gt:0',
+        'nisn' => ['integer', 'gt:0'],
         'tahun_lulus' => 'integer',
         'tanggal_lahir' => 'date',
       ];
+    }
+
+    public function uniqueBy(): string
+    {
+      return 'nisn';
     }
 }

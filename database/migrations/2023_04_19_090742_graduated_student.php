@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('graduated_students', function(Blueprint $table) {
             $table->id();
-            $table->integer('nisn');
+            $table->integer('nisn')->unique();
             $table->string('name');
             $table->date('birth');
             $table->string('photo_path')->nullable();

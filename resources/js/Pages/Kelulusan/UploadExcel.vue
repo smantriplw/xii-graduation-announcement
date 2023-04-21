@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import FormSection from '@/Components/FormSection.vue';
 import InputError from '@/Components/InputError.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
@@ -11,6 +11,7 @@ const fileInput = ref(null);
 const form = useForm({
 	file: null,
 });
+const page = usePage();
 
 const uploadFile = () => {
 	if (!fileInput.value.files.length) {
@@ -18,8 +19,8 @@ const uploadFile = () => {
 		return;
 	}
 
-	form.file = fileInput.value.files[0];
-	form.post('/api/siswa');
+  form.file = fileInput.value.files[0];
+  form.post(route('dashboard.kelulusan.excel'));
 }
 
 const resetForm = () => {
@@ -30,7 +31,7 @@ const resetForm = () => {
 </script>
 
 <template>
-	<FormSection @submitted="uploadFile">
+	<FormSection @submit.prevent="uploadFile">
 		<template #title>
 			Upload Excel File
 		</template>
@@ -48,7 +49,7 @@ const resetForm = () => {
 					name="file_excel"
 				/>
 
-				<InputError :message="form.errors.file" class="mt-2" />
+				<InputError :message="$page.props.errors?.excel_file ?? form.errors.file" class="mt-2" />
 				<progress v-if="form.progress" :value="form.progress.percentage" max="100">
 				  {{ form.progress.percentage }}%
 				</progress>
@@ -57,7 +58,7 @@ const resetForm = () => {
 
 		<template #actions>
 			<ActionMessage :on="form.recentlySuccessful" class="mr-3">
-                Uploaded.
+				{{ $page.props.jetstream.flash.excel_file }}
             </ActionMessage>
 
 			<PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">

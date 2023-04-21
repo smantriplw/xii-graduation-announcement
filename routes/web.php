@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Dashboard\GraduatedStudentController;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,5 +37,12 @@ Route::middleware([
     Route::get('/dashboard/kelulusan', function() {
         return Inertia::render('Kelulusan');
     })->name('dashboard.kelulusan');
+
+    Route::post('/dashboard/kelulusan/excel',
+        [GraduatedStudentController::class, 'excelUpsert']
+    )->name('dashboard.kelulusan.excel');
+    Route::post('/dashboard/kelulusan/students/{nisn}/photo',
+        [GraduatedStudentController::class, 'uploadPhoto']
+    )->name('dashboard.kelulusan.students.photo');
 });
 
