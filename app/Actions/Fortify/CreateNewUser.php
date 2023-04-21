@@ -27,7 +27,7 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
             'token_registration' => ['required', 'string', 'min:6', 'max:6', function(string $attr, mixed $val, Closure $fail) {
-                if ($val !== $this->generate_token()) {
+                if ($val !== CreateNewUser::generate_token()) {
                     $fail('Wrong registration token');
                 }
             }],
@@ -40,7 +40,7 @@ class CreateNewUser implements CreatesNewUsers
         ]);
     }
 
-    public function generate_token(): string
+    public static function generate_token(): string
     {
         $current_time = Carbon::now();
 

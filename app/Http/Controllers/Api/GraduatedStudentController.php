@@ -28,6 +28,9 @@ class GraduatedStudentController extends Controller
 
   public function uploadPhoto(Request $request, int $nisn)
   {
+    $request->validate([
+        'file' => 'required|mimes:png,jpg,jpeg|max:1024',
+    ]);
     $student = GraduatedStudent::where('nisn', $nisn);
     if (!$student->exists()) {
       return response()->json(array(
@@ -36,7 +39,7 @@ class GraduatedStudentController extends Controller
     }
 
     $photo = $request->file('file');
-    if (!$photo->isValid() || !in_array(strtolower($photo->getExtension()), array('jpg', 'png', 'jpeg')) || !$photo->isFile()) {
+    if (!$photo->isValid() || !$photo->isFile()) {
       return response()->json(array(
         "error" => "File foto tidak valid atau ekstensi file tidak mendukung!",
       ), 400);
@@ -60,8 +63,11 @@ class GraduatedStudentController extends Controller
 
   public function excelUpsert(Request $request)
   {
+    $request->validate([
+      'file' => 'required|mimes:tsv,ods,xls,xlsx,slk,csv',
+    ]);
     $excel_file = $request->file('file');
-    if (!$excel_file->isValid() || $excel_file->isFile() || !in_array(strtolower($excel_file->getExtension()), ['xlsx', 'csv', 'tsv', 'ods', 'xls', 'slk'])) {
+    if (!$excel_file->isValid() || $excel_file->isFile()) {
       return response()->json([
         "error" => "File tidak valid atau format tidak didukung"
       ], 400);
