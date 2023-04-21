@@ -7,13 +7,25 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import ActionMessage from '@/Components/ActionMessage.vue';
 
+const fileInput = ref(null);
 const form = useForm({
 	file: null,
 });
-const fileInput = ref(null);
 
 const uploadFile = () => {
+	if (!fileInput.value.files.length) {
+		form.setError('file', 'Mohon pilih salah satu file excel dari komputer Anda');
+		return;
+	}
+
+	form.file = fileInput.value.files[0];
 	form.post('/api/siswa');
+}
+
+const resetForm = () => {
+	fileInput.value.value = '';
+	form.reset();
+	form.clearErrors();
 }
 </script>
 
@@ -32,9 +44,14 @@ const uploadFile = () => {
 				<input
 					type="file"
 					id="file_excel"
-					ref="photoInput"
+					ref="fileInput"
 					name="file_excel"
 				/>
+
+				<InputError :message="form.errors.file" class="mt-2" />
+				<progress v-if="form.progress" :value="form.progress.percentage" max="100">
+				  {{ form.progress.percentage }}%
+				</progress>
 			</div>
 		</template>
 
@@ -46,7 +63,7 @@ const uploadFile = () => {
 			<PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
 				Upload
 			</PrimaryButton>
-			<SecondaryButton :disabled="form.processing" class="ml-2">
+			<SecondaryButton :disabled="form.processing" @click="resetForm" class="ml-2">
 				Reset
 			</SecondaryButton>
 		</template>
