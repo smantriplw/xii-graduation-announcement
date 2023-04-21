@@ -42,6 +42,7 @@ class GraduatedStudentImport implements ToModel, WithValidation, WithHeadingRow,
         'nisn' => ['integer', 'gt:0'],
         'tahun_lulus' => 'integer',
         'tanggal_lahir' => 'date',
+        'nama' => 'required',
       ];
     }
 
