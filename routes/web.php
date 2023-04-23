@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\Dashboard\GraduatedStudentController;
-
+use App\Http\Controllers\Dashboard\KelulusanSettingsController;
+use Carbon\Carbon;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,8 +36,22 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
     Route::get('/dashboard/kelulusan', function() {
-        return Inertia::render('Kelulusan');
+        $settings = KelulusanSettingsController::get_active_settings();
+        return Inertia::render('Kelulusan', $settings);
     })->name('dashboard.kelulusan');
+
+    Route::post('/dashboard/kelulusan/settings',
+        [KelulusanSettingsController::class, 'create']
+    )->name('dashboard.kelulusan.settings');
+    Route::post('/dashboard/kelulusan/settings/{id}',
+        [KelulusanSettingsController::class, 'update']
+    )->name('dashboard.kelulusan.update_setting');
+    Route::post('/dashboard/kelulusan/settings/{id}/enable',
+        [KelulusanSettingsController::class, 'enableSetting']
+    )->where('id', '[0-9]+')->name('dashboard.kelulusan.enable_setting');
+    Route::delete('/dashboard/kelulusan/settings/{id}',
+        [KelulusanSettingsController::class, 'destroy']
+    )->where('id', '[0-9]+')->name('dashboard.kelulusan.delete_setting');
 
     Route::post('/dashboard/kelulusan/excel',
         [GraduatedStudentController::class, 'excelUpsert']

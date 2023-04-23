@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -190,4 +191,7 @@ return [
     ])->toArray(),
 
     'tokenSecret' => env('SHARED_TOKEN_KEY'),
+    'kelulusanDesc' => env('KELULUSAN_DESC', 'Ini deskripsi pengumuman kelulusan kelas 12'),
+    'kelulusanClosed' => env('KELULUSAN_CLOSED', false),
+    'kelulusanOpenedAt' => env('KELULUSAN_OPENED_AT', Carbon::now()->format('Y-m-d')),
 ];

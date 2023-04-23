@@ -20,6 +20,6 @@ class GraduatedStudent extends Model
     protected $hidden = ['nisn'];
 
     protected $casts = [
-        'birth' => 'date:dd-MM-YYYY',
+        'birth' => 'date:Y-m-d',
     ];
 }

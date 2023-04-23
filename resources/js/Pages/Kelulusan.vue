@@ -2,6 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import SectionBorder from '@/Components/SectionBorder.vue';
 import UploadExcel from '@/Pages/Kelulusan/UploadExcel.vue';
+import Settings from '@/Pages/Kelulusan/Settings.vue';
 </script>
 
 <template>
@@ -16,6 +17,10 @@ import UploadExcel from '@/Pages/Kelulusan/UploadExcel.vue';
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
                 <div>
                     <UploadExcel />
+                    <SectionBorder />
+                </div>
+                <div>
+                    <Settings />
                     <SectionBorder />
                 </div>
             </div>
