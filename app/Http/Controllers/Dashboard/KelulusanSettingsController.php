@@ -100,7 +100,7 @@ class KelulusanSettingsController extends Controller
 			]);
 		}
 
-		if ($setting->delete()) {
+		if ($setting->activated && $setting->delete()) {
 			$setting = Settings::where('activated', false);
 			if (!$setting->exists()) {
 				Settings::create([
