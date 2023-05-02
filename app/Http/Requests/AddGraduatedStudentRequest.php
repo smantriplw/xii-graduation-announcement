@@ -22,9 +22,9 @@ class AddGraduatedStudentRequest extends FormRequest
     public function rules(): array
     {
       return [
-        'nisn' => ['integer', 'gt:0'],
-        'graduate_year' => 'integer',
-        'birth' => 'date',
+        'nisn' => ['integer', 'gt:0', 'required'],
+        'graduate_year' => 'required|integer',
+        'birth' => 'required|date',
         'name' => 'required',
       ];
     }

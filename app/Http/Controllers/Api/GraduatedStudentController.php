@@ -36,9 +36,7 @@ class GraduatedStudentController extends Controller
   public function store(AddGraduatedStudentRequest $request) {
     $input = $request->all();
 
-    $student = GraduatedStudent::updateOrCreate([
-      'nisn' => $input['nisn'],
-    ], $input);
+    $student = GraduatedStudent::upsert($input, ['nisn'], ['name', 'graduate_year', 'birth']);
 
     return response()->json([
       'error' => null,
