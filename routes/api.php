@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GraduatedStudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,13 @@ Route::middleware('auth:sanctum')->group(function() {
   });
 });
 
-Route::get('/siswa/{nisn}', [GraduatedStudentController::class, 'show'])->where('nisn', '[0-9]+');
+Route::prefix('siswa')->group(function() {
+  Route::get('/{nisn}', [GraduatedStudentController::class, 'show'])->where('nisn', '[0-9]+')->name('api.siswa.show');
+  Route::get('/', [GraduatedStudentController::class, 'all'])->middleware('auth:sanctum')->name('api.siswa.all');
+});
+
+Route::prefix('auth')->group(function() {
+  Route::post('login', [AuthController::class, 'login'])->middleware('guest')->name('api.auth.login');
+  Route::get('profile', [AuthController::class, 'profile'])->middleware('auth:sanctum')->name('api.auth.profile');
+  Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('api.auth.logout');
+});
