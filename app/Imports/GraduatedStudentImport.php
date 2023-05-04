@@ -39,7 +39,7 @@ class GraduatedStudentImport implements ToModel, WithValidation, WithHeadingRow,
   public function rules(): array
     {
       return [
-        'nisn' => ['integer', 'gt:0'],
+        'nisn' => ['regex:/[0-9]{10}/'],
         'tahun_lulus' => 'integer',
         'tanggal_lahir' => 'date',
         'nama' => 'required',
