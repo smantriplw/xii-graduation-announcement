@@ -7,7 +7,7 @@ use App\Models\GraduatedStudent;
 
 class GraduatedStudentController extends Controller
 {
-  public function show(int $nisn)
+  public function show(string $nisn)
   {
     $student = GraduatedStudent::where('nisn', $nisn);
     if (!$student->exists()) {
